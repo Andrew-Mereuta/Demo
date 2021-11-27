@@ -7,10 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @Entity
@@ -33,21 +30,30 @@ public class UserEntity implements UserDetails {
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Collection<Role> roles = new ArrayList<>();
+    private Set<Course> currentCourses = new HashSet<>();
 
-    public UserEntity(String netid, String password, Collection<Role> roles){
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Course> taCourses = new HashSet<>();
+
+
+    public UserEntity(String netid, String password, Set<Course> currentCourses, Set<Course> taCourses){
         this.netid = netid;
         this.password = password;
-        this.roles = roles;
+        this.currentCourses = new HashSet<>(currentCourses);
+        this.taCourses = new HashSet<>(taCourses);
     }
 
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-        this.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(role.getRole()));
+        this.currentCourses.forEach(course -> {
+            authorities.add(new SimpleGrantedAuthority(course.getCourseCode() + "_STUDENT"));
         });
+        this.taCourses.forEach(course -> {
+            authorities.add(new SimpleGrantedAuthority(course.getCourseCode() + "_TA"));
+        });
+
         return authorities;
     }
 

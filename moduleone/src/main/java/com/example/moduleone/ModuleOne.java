@@ -1,7 +1,7 @@
 package com.example.moduleone;
 
-import com.example.moduleone.models.Role;
-import com.example.moduleone.reporsitories.RoleRepository;
+import com.example.moduleone.models.Course;
+import com.example.moduleone.reporsitories.CourseRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,11 +14,19 @@ public class ModuleOne {
         SpringApplication.run(ModuleOne.class, args);
     }
 
+//    @Bean
+//    public CommandLineRunner demo(RoleRepository repository) {
+//        return (args) -> {
+//            repository.save(new Role("STUDENT"));
+//            repository.save(new Role("TA"));
+//        };
+//    }
+
     @Bean
-    public CommandLineRunner demo(RoleRepository repository) {
+    public CommandLineRunner demo(CourseRepository repository) {
         return (args) -> {
-            repository.save(new Role("STUDENT"));
-            repository.save(new Role("TA"));
+            repository.save(new Course("OOPP"));
+            repository.save(new Course("OOP"));
         };
     }
 

@@ -1,30 +1,30 @@
 package com.example.moduleone.services;
 
-import com.example.moduleone.models.Role;
+import com.example.moduleone.models.Course;
 import com.example.moduleone.models.UserEntity;
 import com.example.moduleone.models.UserRequest;
-import com.example.moduleone.reporsitories.RoleRepository;
+import com.example.moduleone.reporsitories.CourseRepository;
 import com.example.moduleone.reporsitories.UserRepository;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final CourseRepository courseRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository,
+                       CourseRepository courseRepository,
+                       BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
+        this.courseRepository = courseRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -36,8 +36,8 @@ public class UserService implements UserDetailsService {
         if(userRepository.findUserEntityByNetid(user.getNetid()) != null)
             throw new RuntimeException("User already exists!");
 
-        Role student = roleRepository.findRoleByRole("STUDENT");
-        userRepository.save(new UserEntity(user.getNetid(), passwordEncoder.encode(user.getPassword()), Set.of(student)));
+        Optional<Course> oop = courseRepository.findById("OOP");
+        userRepository.save(new UserEntity(user.getNetid(), passwordEncoder.encode(user.getPassword()), Set.of(oop.orElseThrow()), new HashSet<>()));
     }
 
     @Override
@@ -54,8 +54,8 @@ public class UserService implements UserDetailsService {
         if(userRepository.findUserEntityByNetid(user.getNetid()) != null)
             throw new RuntimeException("User already exists!");
 
-        Role student = roleRepository.findRoleByRole("STUDENT");
-        Role ta = roleRepository.findRoleByRole("TA");
-        userRepository.save(new UserEntity(user.getNetid(), passwordEncoder.encode(user.getPassword()), Set.of(student, ta)));
+        Optional<Course> oopp = courseRepository.findById("OOPP");
+        Optional<Course> oop = courseRepository.findById("OOP");
+        userRepository.save(new UserEntity(user.getNetid(), passwordEncoder.encode(user.getPassword()), Set.of(oopp.orElseThrow()), Set.of(oop.orElseThrow())));
     }
 }
