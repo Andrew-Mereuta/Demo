@@ -41,6 +41,8 @@ public class Configuration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/users").permitAll()
                 .antMatchers(  "/api/login/**", "/api/token/refresh").permitAll()
                 .anyRequest().authenticated();
+
+
     }
 
     @Bean

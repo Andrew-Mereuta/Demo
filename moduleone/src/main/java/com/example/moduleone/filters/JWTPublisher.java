@@ -48,7 +48,7 @@ public class JWTPublisher extends UsernamePasswordAuthenticationFilter {
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) {
         UserEntity user = (UserEntity) authResult.getPrincipal();
         String accessToken = construct.createAccessToken(user);
         String refreshToken = construct.createRefreshToken(user);
@@ -56,5 +56,7 @@ public class JWTPublisher extends UsernamePasswordAuthenticationFilter {
         response.setHeader(HttpHeaders.AUTHORIZATION, accessToken);
         response.setHeader("RefreshToken", refreshToken);
     }
+
+
 
 }

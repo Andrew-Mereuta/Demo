@@ -6,6 +6,7 @@ import com.example.moduleone.models.UserEntity;
 import com.example.moduleone.models.UserRequest;
 import com.example.moduleone.services.UserService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -34,5 +35,7 @@ public class UserController {
     public void createNewEnhancedUser(@RequestBody UserRequest user) {
         userService.saveUserAndTA(user);
     }
+
+
 
 }
