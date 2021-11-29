@@ -10,6 +10,8 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -60,5 +62,10 @@ public class UtilsController {
         } else {
             throw new RuntimeException("Refresh token is missing.");
         }
+    }
+
+    @GetMapping("authorize")
+    public ResponseEntity<Object> authorize() {
+        return new ResponseEntity<>("Hello", HttpStatus.OK);
     }
 }

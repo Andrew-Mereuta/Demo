@@ -18,9 +18,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .formLogin().disable()
-                .httpBasic().disable()
-                .addFilterBefore(new JWTFilter(), UsernamePasswordAuthenticationFilter.class)
-                .authorizeRequests()
-                .anyRequest().authenticated();
+                .httpBasic().disable();
+//                .addFilterBefore(new JWTFilter(), UsernamePasswordAuthenticationFilter.class)
+//                .authorizeRequests()
+//                .anyRequest().authenticated();
     }
 }
